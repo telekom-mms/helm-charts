@@ -1,0 +1,18 @@
+{{- range $certificate := .Values.sync_certificate }}
+---
+apiVersion: spv.no/v2beta1
+kind: AzureKeyVaultSecret
+metadata:
+  name: {{ $certificate.name }}
+  namespace: {{ $certificate.namespace }}
+spec:
+  vault:
+    name: {{ $certificate.vault.name }}
+    object:
+      name: {{ $certificate.vault.object }}
+      type: certificate
+  output:
+    secret:
+      name: {{ $certificate.secret }}
+      type: kubernetes.io/tls
+{{- end }}
