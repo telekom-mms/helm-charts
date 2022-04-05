@@ -1,0 +1,63 @@
+name: typo3
+namespace: default
+labels: []
+replicas: 1
+service:
+  ports:
+  - protocol: TCP
+    port: 80
+deployment:
+  containers:
+    imagePullPolicy: "IfNotPresent"
+    resources:
+      requests:
+        memory: "300Mi"
+        cpu: "0.2"
+        ephemeral_storage: "1500Mi"
+      limits:
+        memory: "600Mi"
+        cpu: "0.4"
+        ephemeral_storage: "1500Mi"
+    lifecycle: |
+      postStart:
+        exec:
+          command: ["/bin/sh", "-c", "cd /var/www/html/public && php typo3conf/ext/typo3_console/typo3cms install:fixfolderstructure && php typo3conf/ext/typo3_console/typo3cms cache:flush"]
+    ports:
+    - name: http
+      containerPort: 80
+    readinessProbe:
+      probe: |
+        httpGet:
+          path: '/'
+          port: http
+      initialDelaySeconds: 30
+      periodSeconds: 5
+    livenessProbe:
+      probe: |
+        httpGet:
+          path: '/'
+          port: http
+      initialDelaySeconds: 30
+      periodSeconds: 5
+    startupProbe:
+      probe: |
+        httpGet:
+          path: '/'
+          port: http
+      failureThreshold: 10
+      periodSeconds: 10
+    env: []
+    volumeMounts:
+      fileadmin: "/var/www/html/public/fileadmin"
+      uploads: "/var/www/html/public/uploads"
+      typo3temp:  "/var/www/html/public/typo3temp/assets"
+  volumes: nfs
+persistentvolume:
+  accessModes:
+  - ReadWriteMany
+  mountOptions: []
+  nfs:
+    server: "nfs-server.default.svc.cluster.local"
+    volume: "/"
+    path: "/fileadmin"
+
