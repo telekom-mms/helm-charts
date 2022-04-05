@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    type: nfs
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+spec:
+  accessModes:
+  {{- range $mode := .Values.persistentvolume.accessModes }}
+  - {{ . }}
+  {{- end }}
+  nfs:
+    server: {{ .Values.persistentvolume.nfs.server }}
+    path: {{ .Values.persistentvolume.nfs.volume }}{{ .Values.persistentvolume.nfs.path }}
+  mountOptions:
+  {{- range $mode := .Values.persistentvolume.mountOptionss }}
+  - {{ . }}
+  {{- end }}
