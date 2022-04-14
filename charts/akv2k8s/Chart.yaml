@@ -2,4 +2,4 @@
 apiVersion: v1
 name: akv2k8s
 description: Azure Key Vault to Kubernetes
-version: 1.0.0
+version: 0.1.0
