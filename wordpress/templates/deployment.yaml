@@ -48,15 +48,9 @@ spec:
           failureThreshold: {{ .Values.deployment.containers.startupProbe.failureThreshold }}
           periodSeconds: {{ .Values.deployment.containers.startupProbe.periodSeconds }}
         volumeMounts:
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.subPath }}
-        - name: typo3-content
+        - name: wordpress-content
           mountPath: {{ .Values.deployment.containers.volumeMounts.uploads.mountPath }}
           subPath: {{ .Values.deployment.containers.volumeMounts.uploads.subPath }}
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.subPath }}
         {{- range $name, $volume := .Values.deployment.containers.volumeMounts.extra }}
         - name: {{ $name }}
           mountPath: {{ $volume | quote }}
@@ -67,7 +61,7 @@ spec:
           value: {{ $value | quote }}
         {{- end }}
       volumes:
-      - name: typo3-content
+      - name: wordpress-content
         persistentVolumeClaim:
           claimName: {{ .Values.persistentvolume.name }}
       {{- range $volumes := .Values.volumes }}

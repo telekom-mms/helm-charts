@@ -1,0 +1,54 @@
+---
+name: "proxysql"
+namespace: "default"
+service:
+  ports:
+  - protocol: TCP
+    port: 6033
+  sessionAffinity: "ClientIP"
+  type: "NodePort"
+  externalTrafficPolicy: "Local"
+configmap:
+  data: "config/proxysql.conf"
+daemonset:
+  containers:
+    image: proxysql/proxysql:latest
+    imagePullPolicy: "IfNotPresent"
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "0.3"
+        ephemeral_storage: "2048Mi"
+      limits:
+        memory: "1000Mi"
+        cpu: "0.6"
+        ephemeral_storage: "2048Mi"
+    ports:
+    - name: proxysql
+      containerPort: 6033
+    - name: proxysql-admin
+      containerPort: 6032
+    readinessProbe:
+      probe: |
+        tcpSocket:
+          port: 6032
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    livenessProbe:
+      probe: |
+        tcpSocket:
+          port: 6032
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    startupProbe:
+      probe: |
+        tcpSocket:
+          port: 6032
+      failureThreshold: 10
+      periodSeconds: 10
+    volumeMounts:
+      proxysql:
+        mountPath: "/etc/proxysql.cnf"
+  volumes:
+    proxysql:
+      configmap: "proxysql"

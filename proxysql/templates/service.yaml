@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+spec:
+  selector:
+    app: {{ .Values.name }}
+  ports:
+    {{- range $port := .Values.service.ports }}
+    - protocol: {{ $port.protocol }}
+      port: {{ $port.port }}
+      targetPort: {{ default $port.port $port.targetPort }}
+    {{- end }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
+  type: {{ .Values.service.type }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}

@@ -1,0 +1,30 @@
+{{- if .Values.ingress -}}
+{{- $ingress := .Values.ingress -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $ingress.name }}
+  namespace: {{ $ingress.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    {{- range $key, $value := $ingress.annotations }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+spec:
+  rules:
+  {{- range $ingress.rules.host }}
+  - host: {{ . }}
+    http:
+      paths:
+      {{- range $path := $ingress.rules.http.paths }}
+        - path: {{ $path.path }}
+          pathType: {{ $path.pathType }}
+          backend:
+            service:
+              name: {{ $path.backend.service.name }}
+              port:
+                number: {{ $path.backend.service.port.number }}
+      {{- end }}
+  {{- end }}
+{{- end -}}
