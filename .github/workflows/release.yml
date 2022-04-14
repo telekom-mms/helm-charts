@@ -21,12 +21,40 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          future_release: ${{ steps.version.outputs.next-version }}
+
+      - name: push changelog
+        uses: github-actions-x/commit@v2.6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: 'main'
+          commit-message: 'update changelog'
+          force-add: 'true'
+          files: CHANGELOG.md
+          name: T-Systems MMS
+          email: frage@t-systems-mms.com
+
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
           version: v3.8.1
 
+      - name: Install helm plugin
+        run: |
+          helm plugin install https://github.com/sstarcher/helm-release
+
+      - name: Update Chart.yaml
+        run: |
+          CHARTS=$(git diff --dirstat | sed 's/^[ 0-9.]\+% //g' | cut -d/ -f1)
+          for CHART in $CHARTS; do helm release $CHART --skip-application-version; done
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
+        with:
+          charts_dir: .
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
