@@ -1,4 +1,4 @@
-name: typo3
+name: wordpress
 namespace: default
 replicas: 1
 service:
@@ -17,10 +17,7 @@ deployment:
         memory: "600Mi"
         cpu: "0.4"
         ephemeral_storage: "1500Mi"
-    lifecycle: |
-      postStart:
-        exec:
-          command: ["/bin/sh", "-c", "cd /var/www/html/public && php typo3conf/ext/typo3_console/typo3cms install:fixfolderstructure && php typo3conf/ext/typo3_console/typo3cms cache:flush"]
+    lifecycle: ""
     ports:
     - name: http
       containerPort: 80
@@ -46,15 +43,9 @@ deployment:
       failureThreshold: 10
       periodSeconds: 10
     volumeMounts:
-      fileadmin:
-        mountPath: "/var/www/html/public/fileadmin"
-        subPath: "fileadmin"
       uploads:
-        mountPath: "/var/www/html/public/uploads"
-        subPath: "uploads"
-      typo3temp:
-        mountPath: "/var/www/html/public/typo3temp"
-        subPath: "typo3temp"
+        mountPath: "/var/www/html/public/wp-content/uploads"
+        subPath: "wp-content/uploads"
 persistentvolume:
   name: nfs
   capacity:
