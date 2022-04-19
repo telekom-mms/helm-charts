@@ -1,0 +1,48 @@
+apiVersion: v1
+entries:
+  akv2k8s:
+  - apiVersion: v1
+    created: "2022-04-19T13:29:50.6808886+02:00"
+    description: Azure Key Vault to Kubernetes
+    digest: 624b4d09155ceb972b2186fa75f24ddedf4644693ea5811950396b5ed41800e1
+    name: akv2k8s
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/akv2k8s-0.1.1/akv2k8s-0.1.1.tgz
+    version: 0.1.1
+  k8s:
+  - apiVersion: v1
+    created: "2022-04-19T13:29:50.8735776+02:00"
+    description: Kubernetes Cluster Configuration
+    digest: 64aec441df667927ac6e75a2ec2844879f7ea3cdb2617ea653bffb10bb87976c
+    name: k8s
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/k8s-0.1.1/k8s-0.1.1.tgz
+    version: 0.1.1
+  proxysql:
+  - apiVersion: v1
+    created: "2022-04-19T13:29:51.0651788+02:00"
+    description: ProxySQL Configuration
+    digest: 0f6f98bde05795f8f8b0985392a69c42007e03983d5482ed3df7e6451827a91b
+    name: proxysql
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/proxysql-0.1.1/proxysql-0.1.1.tgz
+    version: 0.1.1
+  typo3:
+  - apiVersion: v1
+    created: "2022-04-19T13:29:51.2607718+02:00"
+    description: Typo3 Configuration
+    digest: df28bd1475c673ce806a53ce1c04d91fdf0189cbcb98454326b49ae06332cc23
+    name: typo3
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/typo3-0.1.1/typo3-0.1.1.tgz
+    version: 0.1.1
+  wordpres:
+  - apiVersion: v1
+    created: "2022-04-19T13:29:51.4514219+02:00"
+    description: WordPress Configuration
+    digest: 1f2ee748d4200bb65e09d070cb4c476e5b4a14a5e2f7c0e01c468fc2cdcc2ce6
+    name: wordpres
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpres-0.1.1/wordpres-0.1.1.tgz
+    version: 0.1.1
+generated: "2022-04-19T13:29:49.3677266+02:00"
