@@ -48,6 +48,7 @@ spec:
         volumeMounts:
         - name: {{ .Values.name }}
           mountPath: {{ .Values.daemonset.containers.volumeMounts.proxysql.mountPath }}
+          subPath: {{ .Values.daemonset.containers.volumeMounts.proxysql.subPath }}
       volumes:
       - name: {{ .Values.name }}
         configMap:
