@@ -2,4 +2,4 @@
 apiVersion: v1
 name: proxysql
 description: ProxySQL Configuration
-version: 0.1.2
+version: 0.1.3
