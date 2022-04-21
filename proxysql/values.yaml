@@ -85,6 +85,7 @@ configmap:
     connect_timeout_server: 10000
     ping_timeout_server: 2500
     long_query_time: 5000
+  # defaults are defined within configfile template
   mysql_servers: {}
   mysql_users: {}
   mysql_query_rules: {}
