@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   akv2k8s:
   - apiVersion: v1
+    created: "2022-04-22T09:45:04.816279558Z"
+    description: Azure Key Vault to Kubernetes
+    digest: c899f7c3bc48b36dc6b1c9bf6f8d96bc58c1d458c97bede029697f3436a24f20
+    name: akv2k8s
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/akv2k8s-0.1.3/akv2k8s-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v1
     created: "2022-04-19T11:48:57.418458735Z"
     description: Azure Key Vault to Kubernetes
     digest: d92e7851ee77a1fd8a98110b031d0aeb915a08df97dfcbbdafdcd830f11103f8
@@ -102,4 +110,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2022-04-21T14:36:15.64750183Z"
+generated: "2022-04-22T09:45:04.816387959Z"
