@@ -48,6 +48,7 @@ daemonset:
       proxysql:
         mountPath: "/etc/proxysql.cnf"
         subPath: "proxysql.cnf"
+    env: {}
   volumes:
     proxysql:
       configmap: "proxysql"
