@@ -10,4 +10,4 @@ metadata:
     {{ $key }}: {{ $value }}
     {{- end }}
 data:
-{{ tpl (.Files.Glob "config/proxysql.conf").AsConfig . | indent 2 }}
+{{ tpl (.Files.Glob "config/proxysql.cnf").AsConfig . | indent 2  }}
