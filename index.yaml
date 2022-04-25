@@ -36,6 +36,14 @@ entries:
     version: 0.1.1
   proxysql:
   - apiVersion: v1
+    created: "2022-04-25T15:23:03.018104109Z"
+    description: ProxySQL Configuration
+    digest: ab79376be4f3dfb46810b2709f8d9132920ad2d663ea448121f3652d04bbbd2a
+    name: proxysql
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/proxysql-0.1.7/proxysql-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v1
     created: "2022-04-21T14:36:15.647183526Z"
     description: ProxySQL Configuration
     digest: 93e54977d3e73802a21d26da684c8d825b847d5444eae3ea18d7f29cf0128651
@@ -110,4 +118,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2022-04-22T09:45:04.816387959Z"
+generated: "2022-04-25T15:23:03.018154009Z"
