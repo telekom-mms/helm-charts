@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   akv2k8s:
   - apiVersion: v1
+    created: "2022-04-28T16:38:03.601845672Z"
+    description: Azure Key Vault to Kubernetes
+    digest: 497a71e1f2bf8f298ebdf8f3818df658be04251a03ad168b51966c5fe1b1ba1b
+    name: akv2k8s
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/akv2k8s-0.1.4/akv2k8s-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v1
     created: "2022-04-22T09:45:04.816279558Z"
     description: Azure Key Vault to Kubernetes
     digest: c899f7c3bc48b36dc6b1c9bf6f8d96bc58c1d458c97bede029697f3436a24f20
@@ -35,6 +43,14 @@ entries:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/k8s-0.1.1/k8s-0.1.1.tgz
     version: 0.1.1
   proxysql:
+  - apiVersion: v1
+    created: "2022-04-28T16:38:03.753997913Z"
+    description: ProxySQL Configuration
+    digest: 988f1b9172fb851a66bd31de8d84f7f8f30109bb7be5bcc78070074d36383d71
+    name: proxysql
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/proxysql-0.1.9/proxysql-0.1.9.tgz
+    version: 0.1.9
   - apiVersion: v1
     created: "2022-04-25T15:37:00.83021384Z"
     description: ProxySQL Configuration
@@ -126,4 +142,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2022-04-25T15:37:00.830247441Z"
+generated: "2022-04-28T16:38:03.754068214Z"
