@@ -10,4 +10,55 @@ metadata:
     {{ $key }}: {{ $value }}
     {{- end }}
 data:
-{{ tpl (.Files.Glob "config/proxysql.cnf").AsConfig . | indent 2  }}
+  proxysql.tmpl: |-
+    {{- $proxysql := .Values.configmap }}
+    datadir  = "{{ $proxysql.datadir }}"
+    errorlog = "{{ $proxysql.errorlog }}"
+
+    admin_variables = { {{- range $key, $value := $proxysql.admin_variables }}
+      {{- if eq $key "admin_credentials" }}
+      {{ $key }} = "{{ $value.username }}:{{ (lookup "v1" "Secret" $.Release.Namespace $value.password).data.value }}" {{- else }}
+      {{ $key }} = "{{ $value }}" {{- end }}{{- end }}
+    }
+
+    mysql_variables = { {{- range $key, $value := $proxysql.mysql_variables }}
+      {{- if eq $key "monitor_password" }}
+      {{ $key }} = "{{ (lookup "v1" "Secret" $.Release.Namespace $value).data.value }}" {{- else }}
+      {{ $key }} = "{{ $value }}" {{- end }}{{- end }}
+    }
+
+    mysql_users = ( {{- range $key, $mysql_user := $proxysql.mysql_users }}
+      {
+        username = "{{ default $key $mysql_user.username }}"
+        default_hostgroup = "{{ default 0 $mysql_user.default_hostgroup }}"
+        active = "{{ default 1 $mysql_user.active }}"
+        password = "{{ (lookup "v1" "Secret" $.Release.Namespace $mysql_user.password).data.value }}"
+      }, {{- end }}
+    )
+
+    mysql_servers = ( {{- range $key, $mysql_server := $proxysql.mysql_servers }}
+      {
+        hostgroup_id = "{{ default 0 $mysql_server.hostgroup_id }}"
+        hostname = "{{ default $key $mysql_server.hostname}}"
+        port = "{{ default 3306 $mysql_server.port }}"
+        use_ssl = "{{ default 1 $mysql_server.use_ssl }}"
+        weight = "{{ default 1 $mysql_server.weight }}"
+        comment = "{{ $mysql_server.comment }}"
+      }, {{- end }}
+    )
+
+    mysql_query_rules = ( {{- range $key, $value := $proxysql.mysql_query_rules }}
+      {{ $key }} = "{{ $value }}" {{- end }}
+    )
+
+    scheduler = ( {{- range $key, $value := $proxysql.scheduler }}
+      {{ $key }} = "{{ $value }}" {{- end }}
+    )
+
+    mysql_replication_hostgroups = ( {{- range $mysql_replication_hostgroup := $proxysql.mysql_replication_hostgroups }}
+      {
+        writer_hostgroup = "{{ default 0 $mysql_replication_hostgroup.writer_hostgroup }}"
+        reader_hostgroup = "{{ default 1 $mysql_replication_hostgroup.reader_hostgroup }}"
+        comment = "{{ $mysql_replication_hostgroup.comment }}"
+      }, {{- end }}
+    )
