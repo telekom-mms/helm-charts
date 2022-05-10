@@ -30,9 +30,9 @@ spec:
             cpu: {{ .Values.deployment.containers.resources.requests.cpu}}
             ephemeral-storage: {{ .Values.deployment.containers.resources.requests.ephemeral_storage }}
           limits:
-            memory: {{ .Values.deployment.containers.resources.requests.memory }}
-            cpu: {{ .Values.deployment.containers.resources.requests.cpu }}
-            ephemeral-storage: {{ .Values.deployment.containers.resources.requests.ephemeral_storage }}
+            memory: {{ .Values.deployment.containers.resources.limits.memory }}
+            cpu: {{ .Values.deployment.containers.resources.limits.cpu }}
+            ephemeral-storage: {{ .Values.deployment.containers.resources.limits.ephemeral_storage }}
         ports:
         {{- range  $port := .Values.deployment.containers.ports }}
         - name: {{ $port.name }}
