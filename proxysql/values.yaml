@@ -47,7 +47,7 @@ daemonset:
     volumeMounts:
       proxysql:
         mountPath: "/etc/proxysql.cnf"
-        subPath: "proxysql.cnf"
+        subPath: "proxysql.tmpl"
     env: {}
   volumes:
     proxysql:
