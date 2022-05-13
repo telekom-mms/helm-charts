@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.name }}
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}
+        image: "{{ .Values.deployment.containers.image.registry }}/{{ .Values.deployment.containers.image.repository }}:{{ .Values.deployment.containers.image.tag }}"
+        imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
+        lifecycle: {{ .Values.deployment.containers.lifecycle | nindent 10 }}
+        resources:
+          requests:
+            memory: {{ .Values.deployment.containers.resources.requests.memory }}
+            cpu: {{ .Values.deployment.containers.resources.requests.cpu}}
+            ephemeral-storage: {{ .Values.deployment.containers.resources.requests.ephemeral_storage }}
+          limits:
+            memory: {{ .Values.deployment.containers.resources.limits.memory }}
+            cpu: {{ .Values.deployment.containers.resources.limits.cpu }}
+            ephemeral-storage: {{ .Values.deployment.containers.resources.limits.ephemeral_storage }}
+        ports:
+        {{- range  $port := .Values.deployment.containers.ports }}
+        - name: {{ $port.name }}
+          containerPort: {{ $port.containerPort }}
+        {{- end }}
+        readinessProbe: {{ .Values.deployment.containers.readinessProbe.probe | nindent 10 }}
+          initialDelaySeconds: {{ .Values.deployment.containers.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployment.containers.readinessProbe.periodSeconds }}
+        livenessProbe: {{ .Values.deployment.containers.livenessProbe.probe | nindent 10 }}
+          initialDelaySeconds: {{ .Values.deployment.containers.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployment.containers.livenessProbe.periodSeconds }}
+        startupProbe: {{ .Values.deployment.containers.startupProbe.probe | nindent 10 }}
+          failureThreshold: {{ .Values.deployment.containers.startupProbe.failureThreshold }}
+          periodSeconds: {{ .Values.deployment.containers.startupProbe.periodSeconds }}
+        volumeMounts:
+        {{- range $name, $volume := .Values.deployment.containers.volumeMounts }}
+        - name: {{ $name }}
+          mountPath: {{ $volume | quote }}
+        {{- end }}
+        env:
+        {{- range $name, $value := .Values.deployment.containers.env  }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+      volumes:
+      {{- range $volumes := .Values.volumes }}
+      - name: {{ $volumes.name }}
+        persistentVolumeClaim: {{ $volumes.persistentVolumeClaim | indent 10 }}
+      {{- end }}
