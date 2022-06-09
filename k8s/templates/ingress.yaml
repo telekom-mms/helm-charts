@@ -9,7 +9,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     {{- range $key, $value := $ingress.annotations }}
-    {{ $key }}: {{ $value }}
+    {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   rules:
