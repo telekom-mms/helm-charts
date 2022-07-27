@@ -3,7 +3,8 @@ namespace: default
 replicas: 1
 service:
   ports:
-  - protocol: TCP
+  - name: "http"
+    protocol: TCP
     port: 80
 deployment:
   containers:
