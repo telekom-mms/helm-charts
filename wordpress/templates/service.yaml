@@ -13,7 +13,8 @@ spec:
     app: {{ .Values.name }}
   ports:
     {{- range $port := .Values.service.ports }}
-    - protocol: {{ $port.protocol }}
+    - name: {{ $port.name }}
+      protocol: {{ $port.protocol }}
       port: {{ $port.port }}
       targetPort: {{ default $port.port $port.targetPort }}
     {{- end }}
