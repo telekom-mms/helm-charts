@@ -66,6 +66,13 @@ spec:
         - name: {{ $name }}
           value: {{ $value | quote }}
         {{- end }}
+        {{- range $secretEnv := .Values.deployment.containers.secretEnv }}
+        - name: {{ $secretEnv.name }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ $secretEnv.secretKeyRef.name }}
+              key: {{ $secretEnv.secretKeyRef.key }}
+        {{- end }}
       volumes:
       - name: typo3-content
         persistentVolumeClaim:
