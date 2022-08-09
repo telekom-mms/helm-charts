@@ -13,11 +13,12 @@ metadata:
     {{- end }}
 spec:
   rules:
-  {{- range $ingress.rules.host }}
-  - host: {{ . }}
+  {{- range $rules := $ingress.rules }}
+  {{- range $host := $rules.host }}
+  - host: {{ $host }}
     http:
       paths:
-      {{- range $path := $ingress.rules.http.paths }}
+      {{- range $path := $rules.http.paths }}
         - path: {{ $path.path }}
           pathType: {{ $path.pathType }}
           backend:
@@ -26,5 +27,6 @@ spec:
               port:
                 number: {{ $path.backend.service.port.number }}
       {{- end }}
+  {{- end }}
   {{- end }}
 {{- end -}}
