@@ -133,6 +133,14 @@ entries:
     version: 0.1.1
   static_site:
   - apiVersion: v1
+    created: "2022-08-11T12:29:10.713482271Z"
+    description: Static site Configuration
+    digest: 5e8939ea3359eac6ed61de0f5fa67fd86ddcf3970672c78732e81d0e0cfd12bf
+    name: static_site
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/static_site-0.1.1/static_site-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
     created: "2022-06-01T08:59:24.2655354+02:00"
     description: Static site Configuration
     digest: 2ae98ad5e85380d54538a57acc396a4726ba0643b88459894ea0e6dfdb4050cb
@@ -215,4 +223,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2022-08-05T08:56:45.018697327Z"
+generated: "2022-08-11T12:29:10.713608171Z"
