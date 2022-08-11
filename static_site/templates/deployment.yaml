@@ -18,6 +18,10 @@ spec:
     metadata:
       labels:
         app: {{ .Values.name }}
+      annotations:
+        {{- range $key, $value := .Values.deployment.template.annotations }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
     spec:
       containers:
       - name: {{ .Values.name }}

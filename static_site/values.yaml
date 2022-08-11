@@ -6,6 +6,8 @@ service:
   - protocol: TCP
     port: 80
 deployment:
+  template:
+    annotations: {}
   containers:
     imagePullPolicy: "IfNotPresent"
     resources:
