@@ -9,6 +9,8 @@ service:
   type: "NodePort"
   externalTrafficPolicy: "Local"
 daemonset:
+  template:
+    annotations: {}
   containers:
     image: proxysql/proxysql:latest
     imagePullPolicy: "IfNotPresent"

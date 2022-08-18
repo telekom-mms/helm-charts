@@ -17,6 +17,11 @@ spec:
     metadata:
       labels:
         app: {{ .Values.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- range $key, $value := .Values.daemonset.template.annotations }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
     spec:
       containers:
       - name: {{ .Values.name }}
