@@ -2,8 +2,8 @@
 
 This repository contains helm charts for
 
-* Kubernetes configuration
-* Installation and / or management of standard applications and 3rd party controllers
+- Kubernetes configuration
+- Installation and / or management of standard applications and 3rd party controllers
 
 ## Repository Structure
 
