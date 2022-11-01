@@ -53,4 +53,4 @@ We'd love for you to contribute to an existing Chart that you find provides a us
 
 ### New Chart
 
-To add a new Chart please follow the instruction for [Chart Releaser](https://github.com/helm/chart-releaser#usage)
+To add a new Chart please follow the instructions from [Chart Releaser](https://github.com/helm/chart-releaser#usage).
