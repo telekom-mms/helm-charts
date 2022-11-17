@@ -1,0 +1,4 @@
+apiVersion: v1
+name: rbac
+description: Configuration for K8S RBAC
+version: 0.1.0

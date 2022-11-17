@@ -1,0 +1,25 @@
+{{- if .Values.role -}}
+{{- range $role := .Values.role }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $role.name | quote }}
+  namespace: {{ $role.namespace | quote }}
+rules:
+{{- range $rule := $role.rules }}
+- apiGroups:
+  {{- range $api_group := $rule.api_groups }}
+  - {{ $api_group | toString | quote }}
+  {{- end }}
+  resources:
+  {{- range $resource := $rule.resources }}
+  - {{ $resource | quote }}
+  {{- end }}
+  verbs:
+  {{- range $verb := $rule.verbs }}
+  - {{ $verb | quote }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end -}}
