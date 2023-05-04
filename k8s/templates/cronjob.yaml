@@ -1,0 +1,61 @@
+{{- if .Values.cronjob -}}
+{{- range $cronjob := .Values.cronjob }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $cronjob.name | quote }}
+  namespace: {{ $cronjob.namespace | quote }}
+spec:
+  schedule: {{ $cronjob.schedule }}
+  concurrencyPolicy: {{ $cronjob.concurrencyPolicy }}
+  failedJobsHistoryLimit: {{ $cronjob.failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ $cronjob.successfulJobsHistoryLimit }}
+  suspend: {{ default false $cronjob.suspend }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ $cronjob.backoffLimit }}
+      template:
+        metadata:
+          name: {{ $cronjob.name | quote }}
+        spec:
+          containers:
+            - name: {{ $cronjob.name | quote }}
+              image: "{{ $cronjob.containers.image.registry }}/{{ $cronjob.containers.image.repository }}:{{ $cronjob.containers.image.tag }}"
+              imagePullPolicy: {{ $cronjob.containers.imagePullPolicy }}
+              env:
+                {{- range $name, $value := $cronjob.containers.env }}
+                - name: {{ $name }}
+                  value: {{ $value | quote }}
+                {{- end }}
+                {{- range $secretEnv := $cronjob.containers.secretEnv }}
+                - name: {{ $secretEnv.name }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ $secretEnv.secretKeyRef.name }}
+                      key: {{ $secretEnv.secretKeyRef.key }}
+                {{- end }}
+              command:
+                {{- range $cronjob.containers.command }}
+                - {{ . | quote }}
+                {{- end }}
+              args:
+                {{- range $cronjob.containers.args }}
+                - {{ . | quote }}
+                {{- end }}
+              volumeMounts:
+                {{- range $name, $volume := $cronjob.containers.volumeMounts }}
+                - name: {{ $name }}
+                  mountPath: {{ $volume | quote }}
+                {{- end }}
+          restartPolicy: {{ $cronjob.restartPolicy }}
+          volumes:
+            {{- range $volume := $cronjob.volumes }}
+            - name: {{ $volume.name }}
+              azureFile:
+                secretName: {{ $volume.azureFile.secretName }}
+                shareName: {{ $volume.azureFile.shareName }}
+                readOnly: {{ default false $volume.azureFile.readOnly }}
+        {{- end }}
+{{- end }}
+{{- end -}}
