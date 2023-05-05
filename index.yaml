@@ -35,6 +35,14 @@ entries:
     version: 0.1.1
   k8s:
   - apiVersion: v1
+    created: "2023-05-05T11:42:43.815604458Z"
+    description: Kubernetes Cluster Configuration
+    digest: 5c942ec8aada7b1b4832ed17ce6ef4eb59638e78764e4a6bc5cfcd15dc899f2a
+    name: k8s
+    urls:
+    - https://github.com/T-Systems-MMS/helm-charts/releases/download/k8s-0.1.6/k8s-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v1
     created: "2023-05-02T09:34:15.029506776Z"
     description: Kubernetes Cluster Configuration
     digest: 3d1474a9cd6a5d4072d4b12dcf5bf4c646362ff4d9d9710cbfb967a91ae304d3
@@ -264,4 +272,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2023-05-02T09:34:15.029571378Z"
+generated: "2023-05-05T11:42:43.81576056Z"
