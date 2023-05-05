@@ -1,0 +1,55 @@
+{{- if .Values.job -}}
+{{- range $job := .Values.job }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $job.name | quote }}
+  namespace: {{ $job.namespace | quote }}
+spec:
+  backoffLimit: {{ $job.backoffLimit }}
+  template:
+    metadata:
+      name: {{ $job.name | quote }}
+    spec:
+      containers:
+        - name: {{ $job.name | quote }}
+          image: "{{ $job.containers.image.registry }}/{{ $job.containers.image.repository }}:{{ $job.containers.image.tag }}"
+          imagePullPolicy: {{ $job.containers.imagePullPolicy }}
+          env:
+            {{- range $name, $value := $job.containers.env }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $secretEnv := $job.containers.secretEnv }}
+            - name: {{ $secretEnv.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretEnv.secretKeyRef.name }}
+                  key: {{ $secretEnv.secretKeyRef.key }}
+            {{- end }}
+          command:
+            {{- range $job.containers.command }}
+            - {{ . | quote }}
+            {{- end }}
+          args:
+            {{- range $job.containers.args }}
+            - {{ . | quote }}
+            {{- end }}
+          volumeMounts:
+            {{- range $name, $volume := $job.containers.volumeMounts }}
+            - name: {{ $name }}
+              mountPath: {{ $volume | quote }}
+            {{- end }}
+      restartPolicy: {{ $job.restartPolicy }}
+      volumes:
+        {{- range $volume := $job.volumes }}
+        - name: {{ $volume.name }}
+          azureFile:
+            secretName: {{ $volume.azureFile.secretName }}
+            shareName: {{ $volume.azureFile.shareName }}
+            readOnly: {{ default false $volume.azureFile.readOnly }}
+        {{- end }}
+  suspend: {{ default false $job.suspend }}
+{{- end }}
+{{- end -}}
