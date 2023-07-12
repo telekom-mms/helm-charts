@@ -20,7 +20,7 @@ The purpose of this repository is to provide a place for maintaining and contrib
 To add the Helm Charts for your local client, run
 
 ```bash
-helm repo add telekom-mms https://github.com/telekom-mms/helm-charts
+helm repo add telekom-mms https://telekom-mms.github.io/helm-charts/
 ```
 
 To see available charts and install a chart just run
@@ -37,10 +37,11 @@ helm install telekom-mms/<chart>
 To use a specific Helm Chart configure your configuration to use
 
 ```bash
-helm upgrade --install <name> <chart> --version <version> --repo https://github.com/telekom-mms/helm-charts
+helm upgrade --install <name> <chart> --version <version> --repo https://telekom-mms.github.io/helm-charts/
+
 
 # example k8s charts
-helm upgrade --install k8s-config k8s --version 0.1.2 --repo https://github.com/telekom-mms/helm-charts
+helm upgrade --install k8s-config k8s --version 0.1.2 --repo https://telekom-mms.github.io/helm-charts/
 ```
 
 For more information about installing and using Helm, see the [Helm Docs](https://helm.sh/docs/). For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/topics/charts/).
