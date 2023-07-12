@@ -1,4 +1,4 @@
-# T-Systems-MMS helm-charts
+# Telekom MMS helm-charts
 
 This repository contains helm charts for
 
@@ -7,7 +7,7 @@ This repository contains helm charts for
 
 ## Repository Structure
 
-This GitHub repository contains the source for the packaged and versioned charts released using [GitHub pages](https://github.com/T-Systems-MMS/helm-charts/tree/gh-pages) (the Chart Repository).
+This GitHub repository contains the source for the packaged and versioned charts released using [GitHub pages](https://github.com/telekom-mms/helm-charts/tree/gh-pages) (the Chart Repository).
 
 The Charts in the root directory in the main branch of this repository match the latest packaged Chart in the Chart Repository, though there may be previous versions of a Chart available in that Chart Repository.
 
@@ -20,16 +20,16 @@ The purpose of this repository is to provide a place for maintaining and contrib
 To add the Helm Charts for your local client, run
 
 ```bash
-helm repo add t-systems-mms https://github.com/T-Systems-MMS/helm-charts
+helm repo add telekom-mms https://github.com/telekom-mms/helm-charts
 ```
 
 To see available charts and install a chart just run
 
 ```bash
 # list available charts
-helm search repo t-systems-mms
+helm search repo telekom-mms
 # install
-helm install t-systems-mms/<chart>
+helm install telekom-mms/<chart>
 ```
 
 ### CI/CD
@@ -37,10 +37,10 @@ helm install t-systems-mms/<chart>
 To use a specific Helm Chart configure your configuration to use
 
 ```bash
-helm upgrade --install <name> <chart> --version <version> --repo https://github.com/T-Systems-MMS/helm-charts
+helm upgrade --install <name> <chart> --version <version> --repo https://github.com/telekom-mms/helm-charts
 
 # example k8s charts
-helm upgrade --install k8s-config k8s --version 0.1.2 --repo https://github.com/T-Systems-MMS/helm-charts
+helm upgrade --install k8s-config k8s --version 0.1.2 --repo https://github.com/telekom-mms/helm-charts
 ```
 
 For more information about installing and using Helm, see the [Helm Docs](https://helm.sh/docs/). For a quick introduction to Charts, see the [Chart Guide](https://helm.sh/docs/topics/charts/).

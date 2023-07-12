@@ -27,17 +27,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           future_release: ${{ steps.version.outputs.next-version }}
 
-      # - name: push changelog
-      #   uses: github-actions-x/commit@v2.6
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     push-branch: 'main'
-      #     commit-message: 'update changelog'
-      #     force-add: 'true'
-      #     files: CHANGELOG.md
-      #     name: T-Systems MMS
-      #     email: frage@t-systems-mms.com
-
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
