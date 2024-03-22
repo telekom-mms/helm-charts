@@ -12,7 +12,7 @@ daemonset:
   template:
     annotations: {}
   containers:
-    image: proxysql/proxysql:latest@sha256:37eb7e46d947abe0f7b1bb87552ba909ddd5e76f874810dffa518b63e49e2992
+    image: proxysql/proxysql:latest@sha256:e3f2ce61fe47b20cf5232ebb6db8122bc2e716a4a891e83e14219dbc988689e4
     imagePullPolicy: "IfNotPresent"
     resources:
       requests:
