@@ -52,7 +52,7 @@ deployment:
   containers:
     image:
       registry: docker.io
-      repository: martin/typo3
+      repository: muster/typo3
       tag: 11.5
     resources:
       requests:
