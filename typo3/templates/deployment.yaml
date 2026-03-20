@@ -73,6 +73,9 @@ spec:
               name: {{ $secretEnv.secretKeyRef.name }}
               key: {{ $secretEnv.secretKeyRef.key }}
         {{- end }}
+        {{- with .Values.deployment.additionalContainers }}
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
       volumes:
       - name: typo3-content
         persistentVolumeClaim:
