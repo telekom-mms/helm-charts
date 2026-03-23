@@ -56,6 +56,7 @@ deployment:
       typo3temp:
         mountPath: "/var/www/html/public/typo3temp"
         subPath: "typo3temp"
+  additionalContainers: []
 persistentvolume:
   name: nfs
   capacity:
