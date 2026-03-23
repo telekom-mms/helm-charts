@@ -62,8 +62,8 @@ deployment:
         memory: "300Mi"
         cpu: "0.4"
     ports:
-    - name: http
-      containerPort: 80
+      - name: http
+        containerPort: 80
 ```
 
 ## Contributing

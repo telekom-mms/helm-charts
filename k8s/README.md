@@ -130,7 +130,7 @@ job:
         repository: perl
         tag: 5.34.0
       imagePullPolicy: IfNotPresent
-      command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
 
 ingress:
   name: my-ingress
@@ -138,7 +138,7 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   rules:
-    - host: 
+    - host:
         - example.com
       http:
         paths:

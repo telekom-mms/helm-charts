@@ -48,8 +48,8 @@ name: "proxysql"
 namespace: "default"
 service:
   ports:
-  - protocol: TCP
-    port: 6033
+    - protocol: TCP
+      port: 6033
   type: "NodePort"
 daemonset:
   containers:
