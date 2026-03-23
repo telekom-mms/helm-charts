@@ -84,6 +84,14 @@ entries:
     version: 0.1.1
   proxysql:
   - apiVersion: v1
+    created: "2026-03-23T07:50:25.209394731Z"
+    description: ProxySQL Configuration
+    digest: afac3ce87bcf2be1dad1b7108aabfb9b569ff55ba8faa08b80cc46fe0b8c5855
+    name: proxysql
+    urls:
+    - https://github.com/telekom-mms/helm-charts/releases/download/proxysql-0.3.0/proxysql-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v1
     created: "2022-08-18T05:34:06.367261531Z"
     description: ProxySQL Configuration
     digest: 8fb25d0afd58c997dc0f8cb37826456e02928980f778f9e57b8727ff2de2e55c
@@ -199,6 +207,14 @@ entries:
     version: 0.0.1
   typo3:
   - apiVersion: v1
+    created: "2026-03-23T07:50:25.456468001Z"
+    description: Typo3 Configuration
+    digest: 06426eba09d576c1bad755321895d990fcedea09f968714397e821f94573e6d2
+    name: typo3
+    urls:
+    - https://github.com/telekom-mms/helm-charts/releases/download/typo3-0.4.0/typo3-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v1
     created: "2022-08-05T08:56:44.836358804Z"
     description: Typo3 Configuration
     digest: 3f772cbb913c0ad3998675d1e10480cae643d16b93dd320b1cd42ef51506e2be
@@ -272,4 +288,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2023-05-05T11:42:43.81576056Z"
+generated: "2026-03-23T07:50:25.456556657Z"
