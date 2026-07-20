@@ -1,24 +1,19 @@
+{{- if .Values.persistentvolume.enabled }}
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: {{ .Values.persistentvolume.name }}
   labels:
-    type: nfs
-    {{- range $key, $value := .Values.labels }}
-    {{ $key }}: {{ $value }}
-    {{- end }}
+    app: {{ .Values.name }}
 spec:
   capacity:
     storage: {{ .Values.persistentvolume.capacity.storage }}
   accessModes:
-  {{- range $mode := .Values.persistentvolume.accessModes }}
-  - {{ . }}
+    {{- toYaml .Values.persistentvolume.accessModes | nindent 4 }}
+  storageClassName: {{ .Values.persistentvolume.storageClassName | default "" }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentvolume.reclaimPolicy | default "Retain" }}
+  {{- with .Values.persistentvolume.volumeSource }}
+  {{ . | nindent 2 }}
   {{- end }}
-  nfs:
-    server: {{ .Values.persistentvolume.nfs.server }}
-    path: {{ .Values.persistentvolume.nfs.volume }}{{ .Values.persistentvolume.nfs.path }}
-  mountOptions:
-  {{- range $mode := .Values.persistentvolume.mountOptionss }}
-  - {{ . }}
-  {{- end }}
+{{- end }}

@@ -58,15 +58,18 @@ deployment:
         subPath: "typo3temp"
   additionalContainers: []
 persistentvolume:
-  name: nfs
+  enabled: true
+  name: typo3-pv
   capacity:
     storage: "10Gi"
   accessModes:
   - ReadWriteMany
-  nfs:
-    server: "nfs-server.default.svc.cluster.local"
-    volume: "/"
-    path: "/"
+  storageClassName: ""
+  reclaimPolicy: Retain
+  # volumeSource: |    # raw volume source block for static provisioning, e.g.:
+  #   nfs:
+  #     server: nfs-server.example.com
+  #     path: /exports/typo3
 persistentvolumeclaim:
   resources:
     requests:
