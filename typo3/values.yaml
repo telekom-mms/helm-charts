@@ -1,11 +1,46 @@
 name: typo3
 namespace: default
 replicas: 1
+imagePullSecrets: []
+
+# mode controls the deployment topology.
+# mod_php: single apache+mod_php container (default)
+# fpm:     webserver sidecar + php-fpm container (communicating via Unix socket)
+mode: mod_php
+
 service:
   ports:
   - name: "http"
     protocol: TCP
     port: 80
+
+# webserver is only used when mode=fpm.
+# Configure the front-facing webserver container (e.g. nginx or apache).
+webserver:
+  image:
+    registry: docker.io
+    repository: nginx
+    tag: "1.25"
+  imagePullPolicy: "IfNotPresent"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "0.1"
+      ephemeral_storage: "256Mi"
+    limits:
+      memory: "128Mi"
+      cpu: "0.2"
+      ephemeral_storage: "256Mi"
+  ports:
+  - name: http
+    containerPort: 80
+
+# phpfpm is only used when mode=fpm.
+# The php-fpm container itself is configured via deployment.containers below.
+phpfpm:
+  # socketPath is the Unix socket used for webserver <-> php-fpm communication.
+  socketPath: /run/php-fpm/php-fpm.sock
+
 deployment:
   containers:
     imagePullPolicy: "IfNotPresent"
@@ -18,10 +53,6 @@ deployment:
         memory: "600Mi"
         cpu: "0.4"
         ephemeral_storage: "1500Mi"
-    lifecycle: |
-      postStart:
-        exec:
-          command: ["/bin/sh", "-c", "cd /var/www/html/public && php typo3conf/ext/typo3_console/typo3cms install:fixfolderstructure && php typo3conf/ext/typo3_console/typo3cms cache:flush"]
     ports:
     - name: http
       containerPort: 80
@@ -53,21 +84,45 @@ deployment:
       uploads:
         mountPath: "/var/www/html/public/uploads"
         subPath: "uploads"
-      typo3temp:
-        mountPath: "/var/www/html/public/typo3temp"
-        subPath: "typo3temp"
-  additionalContainers: []
+        typo3temp:
+          mountPath: "/var/www/html/public/typo3temp"
+          subPath: "typo3temp"
+        # extra: additional named volumes to mount (name: mountPath)
+        # extra:
+        #   my-config: /var/www/html/config/my-config
+
 persistentvolume:
-  name: nfs
+  enabled: true
+  name: typo3-pv
   capacity:
     storage: "10Gi"
   accessModes:
   - ReadWriteMany
-  nfs:
-    server: "nfs-server.default.svc.cluster.local"
-    volume: "/"
-    path: "/"
+  storageClassName: ""
+  reclaimPolicy: Retain
+  # volumeSource: |    # raw volume source block for static provisioning, e.g.:
+  #   nfs:
+  #     server: nfs-server.example.com
+  #     path: /exports/typo3
+
 persistentvolumeclaim:
   resources:
     requests:
       storage: 1Gi
+
+httpRoute:
+  enabled: false
+  name: ""          # defaults to .Values.name
+  namespace: ""     # defaults to .Values.namespace
+  parentRefs:
+    - name: ""
+      namespace: ""
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ""  # defaults to .Values.name
+          port: 80

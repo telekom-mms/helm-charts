@@ -1,3 +1,6 @@
+{{- if not (or (eq .Values.mode "mod_php") (eq .Values.mode "fpm")) }}
+{{- fail (printf "Invalid mode %q — must be mod_php or fpm" .Values.mode) }}
+{{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,24 +22,69 @@ spec:
       labels:
         app: {{ .Values.name }}
     spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
       containers:
+      {{- if eq .Values.mode "fpm" }}
+      - name: webserver
+        image: "{{ .Values.webserver.image.registry }}/{{ .Values.webserver.image.repository }}:{{ .Values.webserver.image.tag }}"
+        imagePullPolicy: {{ .Values.webserver.imagePullPolicy }}
+        resources:
+          requests:
+            memory: {{ .Values.webserver.resources.requests.memory }}
+            cpu: {{ .Values.webserver.resources.requests.cpu }}
+            ephemeral-storage: {{ .Values.webserver.resources.requests.ephemeral_storage }}
+          limits:
+            memory: {{ .Values.webserver.resources.limits.memory }}
+            cpu: {{ .Values.webserver.resources.limits.cpu }}
+            ephemeral-storage: {{ .Values.webserver.resources.limits.ephemeral_storage }}
+        ports:
+        {{- range $port := .Values.webserver.ports }}
+        - name: {{ $port.name }}
+          containerPort: {{ $port.containerPort }}
+        {{- end }}
+        volumeMounts:
+        {{- range $name, $volume := .Values.deployment.containers.volumeMounts }}
+        {{- if ne $name "extra" }}
+        - name: typo3-content
+          mountPath: {{ $volume.mountPath }}
+          subPath: {{ $volume.subPath }}
+        {{- end }}
+        {{- end }}
+        {{- range $name, $volume := .Values.deployment.containers.volumeMounts.extra }}
+        - name: {{ $name }}
+          mountPath: {{ $volume | quote }}
+        {{- end }}
+        - name: php-fpm-socket
+          mountPath: /run/php-fpm
+      - name: php-fpm
+      {{- else }}
       - name: {{ .Values.name }}
+      {{- end }}
         image: "{{ .Values.deployment.containers.image.registry }}/{{ .Values.deployment.containers.image.repository }}:{{ .Values.deployment.containers.image.tag }}"
         imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
+        {{- if .Values.deployment.containers.lifecycle }}
         lifecycle: {{ .Values.deployment.containers.lifecycle | nindent 10 }}
+        {{- end }}
         resources:
           requests:
             memory: {{ .Values.deployment.containers.resources.requests.memory }}
-            cpu: {{ .Values.deployment.containers.resources.requests.cpu}}
+            cpu: {{ .Values.deployment.containers.resources.requests.cpu }}
             ephemeral-storage: {{ .Values.deployment.containers.resources.requests.ephemeral_storage }}
           limits:
             memory: {{ .Values.deployment.containers.resources.limits.memory }}
             cpu: {{ .Values.deployment.containers.resources.limits.cpu }}
             ephemeral-storage: {{ .Values.deployment.containers.resources.limits.ephemeral_storage }}
+        {{- if .Values.deployment.containers.ports }}
         ports:
-        {{- range  $port := .Values.deployment.containers.ports }}
+        {{- range $port := .Values.deployment.containers.ports }}
         - name: {{ $port.name }}
           containerPort: {{ $port.containerPort }}
+        {{- end }}
         {{- end }}
         readinessProbe: {{ .Values.deployment.containers.readinessProbe.probe | nindent 10 }}
           initialDelaySeconds: {{ .Values.deployment.containers.readinessProbe.initialDelaySeconds }}
@@ -48,21 +96,23 @@ spec:
           failureThreshold: {{ .Values.deployment.containers.startupProbe.failureThreshold }}
           periodSeconds: {{ .Values.deployment.containers.startupProbe.periodSeconds }}
         volumeMounts:
+        {{- range $name, $volume := .Values.deployment.containers.volumeMounts }}
+        {{- if ne $name "extra" }}
         - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.subPath }}
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.uploads.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.uploads.subPath }}
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.subPath }}
+          mountPath: {{ $volume.mountPath }}
+          subPath: {{ $volume.subPath }}
+        {{- end }}
+        {{- end }}
         {{- range $name, $volume := .Values.deployment.containers.volumeMounts.extra }}
         - name: {{ $name }}
           mountPath: {{ $volume | quote }}
         {{- end }}
+        {{- if eq .Values.mode "fpm" }}
+        - name: php-fpm-socket
+          mountPath: /run/php-fpm
+        {{- end }}
         env:
-        {{- range $name, $value := .Values.deployment.containers.env  }}
+        {{- range $name, $value := .Values.deployment.containers.env }}
         - name: {{ $name }}
           value: {{ $value | quote }}
         {{- end }}
@@ -73,13 +123,14 @@ spec:
               name: {{ $secretEnv.secretKeyRef.name }}
               key: {{ $secretEnv.secretKeyRef.key }}
         {{- end }}
-        {{- with .Values.deployment.additionalContainers }}
-        {{- toYaml . | nindent 6 }}
-        {{- end }}
       volumes:
       - name: typo3-content
         persistentVolumeClaim:
           claimName: {{ .Values.persistentvolume.name }}
+      {{- if eq .Values.mode "fpm" }}
+      - name: php-fpm-socket
+        emptyDir: {}
+      {{- end }}
       {{- range $volumes := .Values.volumes }}
       - name: {{ $volumes.name }}
         persistentVolumeClaim: {{ $volumes.persistentVolumeClaim | indent 10 }}
