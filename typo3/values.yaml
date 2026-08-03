@@ -19,10 +19,6 @@ deployment:
         memory: "600Mi"
         cpu: "0.4"
         ephemeral_storage: "1500Mi"
-    lifecycle: |
-      postStart:
-        exec:
-          command: ["/bin/sh", "-c", "cd /var/www/html/public && php typo3conf/ext/typo3_console/typo3cms install:fixfolderstructure && php typo3conf/ext/typo3_console/typo3cms cache:flush"]
     ports:
     - name: http
       containerPort: 80
