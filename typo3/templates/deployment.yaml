@@ -48,15 +48,13 @@ spec:
           failureThreshold: {{ .Values.deployment.containers.startupProbe.failureThreshold }}
           periodSeconds: {{ .Values.deployment.containers.startupProbe.periodSeconds }}
         volumeMounts:
+        {{- range $name, $volume := .Values.deployment.containers.volumeMounts }}
+        {{- if ne $name "extra" }}
         - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.fileadmin.subPath }}
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.uploads.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.uploads.subPath }}
-        - name: typo3-content
-          mountPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.mountPath }}
-          subPath: {{ .Values.deployment.containers.volumeMounts.typo3temp.subPath }}
+          mountPath: {{ $volume.mountPath }}
+          subPath: {{ $volume.subPath }}
+        {{- end }}
+        {{- end }}
         {{- range $name, $volume := .Values.deployment.containers.volumeMounts.extra }}
         - name: {{ $name }}
           mountPath: {{ $volume | quote }}
