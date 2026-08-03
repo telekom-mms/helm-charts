@@ -1,6 +1,7 @@
 name: typo3
 namespace: default
 replicas: 1
+imagePullSecrets: []
 service:
   ports:
   - name: "http"
