@@ -29,7 +29,9 @@ spec:
       - name: {{ .Values.name }}
         image: "{{ .Values.deployment.containers.image.registry }}/{{ .Values.deployment.containers.image.repository }}:{{ .Values.deployment.containers.image.tag }}"
         imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
+        {{- if .Values.deployment.containers.lifecycle }}
         lifecycle: {{ .Values.deployment.containers.lifecycle | nindent 10 }}
+        {{- end }}
         resources:
           requests:
             memory: {{ .Values.deployment.containers.resources.requests.memory }}
