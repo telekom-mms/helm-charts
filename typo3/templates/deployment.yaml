@@ -32,6 +32,10 @@ spec:
       - name: {{ . }}
       {{- end }}
       {{- end }}
+      {{- with .Values.deployment.initContainers }}
+      initContainers:
+    {{ toYaml . | nindent 6 }}
+      {{- end }}
       containers:
       {{- if eq .Values.mode "fpm" }}
       - name: webserver

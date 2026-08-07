@@ -42,6 +42,9 @@ phpfpm:
   socketPath: /run/php-fpm/php-fpm.sock
 
 deployment:
+  # Optional init containers executed before app containers.
+  # Useful for fixing PVC ownership/permissions before php-fpm starts.
+  initContainers: []
   containers:
     imagePullPolicy: "IfNotPresent"
     resources:
