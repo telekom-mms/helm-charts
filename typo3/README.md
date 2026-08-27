@@ -6,10 +6,10 @@ This Helm chart installs TYPO3.
 
 Set `mode` to one of:
 
-| Value | Description |
-|-------|-------------|
-| `mod_php` | Single Apache + mod_php container (default) |
-| `fpm` | Webserver sidecar (nginx) + php-fpm container communicating via a Unix socket |
+| Value     | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| `mod_php` | Single Apache + mod_php container (default)                                   |
+| `fpm`     | Webserver sidecar (nginx) + php-fpm container communicating via a Unix socket |
 
 ## Usage
 
