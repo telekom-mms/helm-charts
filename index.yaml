@@ -207,6 +207,14 @@ entries:
     version: 0.0.1
   typo3:
   - apiVersion: v1
+    created: "2026-08-28T07:26:51.215574545Z"
+    description: Typo3 Configuration
+    digest: 1d71b3c47913bbf06b2e3d02493d47cbe34cff9b46eaa491b57baf594bb3f669
+    name: typo3
+    urls:
+    - https://github.com/telekom-mms/helm-charts/releases/download/typo3-1.0.0/typo3-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v1
     created: "2026-03-23T07:50:25.456468001Z"
     description: Typo3 Configuration
     digest: 06426eba09d576c1bad755321895d990fcedea09f968714397e821f94573e6d2
@@ -288,4 +296,4 @@ entries:
     urls:
     - https://github.com/T-Systems-MMS/helm-charts/releases/download/wordpress-0.1.2/wordpress-0.1.2.tgz
     version: 0.1.2
-generated: "2026-03-23T07:50:25.456556657Z"
+generated: "2026-08-28T07:26:51.215647333Z"
