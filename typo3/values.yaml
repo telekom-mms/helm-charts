@@ -20,7 +20,7 @@ webserver:
   image:
     registry: docker.io
     repository: nginx
-    tag: "1.25"
+    tag: "1.25@sha256:a484819eb60211f5299034ac80f6a681b06f89e65866ce91f356ed7c72af059c"
   imagePullPolicy: "IfNotPresent"
   resources:
     requests:
