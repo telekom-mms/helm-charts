@@ -38,8 +38,25 @@ jobs:
 
       - name: Update Chart.yaml
         run: |
-          CHARTS=$(git diff --dirstat | sed 's/^[ 0-9.]\+% //g' | cut -d/ -f1)
-          for CHART in $CHARTS; do helm release $CHART --skip-application-version; done
+          # Detect changes against the previous commit
+          CHARTS=$(git diff --dirstat=files,0 HEAD^ HEAD | sed 's/^[ 0-9.]\+% //g' | cut -d/ -f1 | sort -u)
+          
+          CHANGES_MADE=false
+          for CHART in $CHARTS; do
+             if [ -f "$CHART/Chart.yaml" ]; then
+               echo "Updating Chart.yaml for $CHART"
+               helm release "$CHART" --skip-application-version
+               git add "$CHART/Chart.yaml"
+               CHANGES_MADE=true
+             fi
+          done
+
+          if [ "$CHANGES_MADE" = true ]; then
+             git commit -m "Bump chart versions [skip ci]"
+             git push
+          else
+             echo "No chart updates found."
+          fi
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@cae68fefc6b5f367a0275617c9f83181ba54714f # v1.7.0
@@ -47,3 +64,36 @@ jobs:
           charts_dir: .
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages-branch
+
+      - name: Update documentation
+        run: |
+          for dir in */; do
+            if [ -f "${dir}Chart.yaml" ]; then
+              chart_name=$(basename "${dir}")
+              mkdir -p "gh-pages-branch/${chart_name}"
+              if [ -f "${dir}README.md" ]; then
+                cp "${dir}README.md" "gh-pages-branch/${chart_name}/index.md"
+              fi
+            fi
+          done
+
+          echo "# Helm Charts" > gh-pages-branch/index.md
+          for dir in */; do
+            if [ -f "${dir}Chart.yaml" ]; then
+              chart_name=$(basename "${dir}")
+              echo "- [${chart_name}](./${chart_name}/)" >> gh-pages-branch/index.md
+            fi
+          done
+
+          cd gh-pages-branch
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add .
+          git commit -m "Update documentation" --allow-empty
+          git push
